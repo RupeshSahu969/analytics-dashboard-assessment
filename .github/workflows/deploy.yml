@@ -3,7 +3,7 @@ name: Deploy to GitHub Pages
 on:
   push:
     branches:
-      - main  # or master
+      - main  # or your default branch
 
 jobs:
   build-and-deploy:
@@ -20,12 +20,14 @@ jobs:
 
       - name: Install dependencies
         run: npm install
+        working-directory: analytics-dashboard-assessment
 
       - name: Build project
         run: npm run build
+        working-directory: analytics-dashboard-assessment
 
       - name: Deploy to GitHub Pages
         uses: peaceiris/actions-gh-pages@v3
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
-          publish_dir: ./build  # or ./dist if using Vite
+          publish_dir: ./analytics-dashboard-assessment/build
