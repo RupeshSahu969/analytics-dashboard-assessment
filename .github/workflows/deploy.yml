@@ -1,33 +1,34 @@
-name: Deploy to GitHub Pages
+name: CI - Build and Test
 
 on:
   push:
     branches:
-      - main  # or your default branch
+      - main
+  pull_request:
+    branches:
+      - main
 
 jobs:
-  build-and-deploy:
+  build-and-test:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout repo
+      - name: 📦 Checkout Repository
         uses: actions/checkout@v3
 
-      - name: Setup Node
+      - name: 🧰 Setup Node.js
         uses: actions/setup-node@v3
         with:
           node-version: 18
 
-      - name: Install dependencies
+      - name: 📥 Install Dependencies
         run: npm install
         working-directory: analytics-dashboard-assessment
 
-      - name: Build project
+      - name: 🏗️ Build Project
         run: npm run build
         working-directory: analytics-dashboard-assessment
 
-      - name: Deploy to GitHub Pages
-        uses: peaceiris/actions-gh-pages@v3
-        with:
-          github_token: ${{ secrets.GITHUB_TOKEN }}
-          publish_dir: ./analytics-dashboard-assessment/build
+      - name: ✅ Run Tests
+        run: npm test -- --watchAll=false
+        working-directory: analytics-dashboard-assessment
